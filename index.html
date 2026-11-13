@@ -1,0 +1,1252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Santu Biswas — Molecular Microbiologist & Bioinformatician</title>
+  <meta name="description" content="Applying molecular microbiology, bacterial genomics, and bioinformatics to characterize fish pathogens, track antimicrobial resistance, and discover in silico drug targets for sustainable aquaculture." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    /* === DESIGN TOKENS === */
+    :root {
+      --bg: #ffffff;
+      --fg: #13273b;
+      --muted: #5b6b7e;
+      --border: #e5e7eb;
+      --primary: #13273b;
+      --primary-fg: #ffffff;
+      --accent: #f3f4f6;
+      --card: rgba(255, 255, 255, 0.6);
+      --card-border: rgba(19, 39, 59, 0.12);
+      --emerald: #10b981;
+      --shadow: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+      --shadow-lg: 0 10px 25px rgba(0,0,0,0.08), 0 4px 10px rgba(0,0,0,0.04);
+    }
+    html.dark {
+      --bg: #0f172a;
+      --fg: #f8fafc;
+      --muted: #94a3b8;
+      --border: rgba(255, 255, 255, 0.1);
+      --primary: #f8fafc;
+      --primary-fg: #0f172a;
+      --accent: #1e293b;
+      --card: rgba(30, 41, 59, 0.6);
+      --card-border: rgba(255, 255, 255, 0.08);
+      --shadow: 0 1px 3px rgba(0,0,0,0.3);
+      --shadow-lg: 0 10px 25px rgba(0,0,0,0.4);
+    }
+    /* === RESET === */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--fg);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      transition: background-color 0.2s, color 0.2s;
+    }
+    a { color: inherit; text-decoration: none; }
+    button { font-family: inherit; cursor: pointer; border: none; background: none; color: inherit; }
+    img { max-width: 100%; display: block; }
+    ul { list-style: none; }
+
+    /* === LAYOUT === */
+    .container { max-width: 1152px; margin: 0 auto; padding: 0 1rem; }
+    @media (min-width: 640px) { .container { padding: 0 1.5rem; } }
+    @media (min-width: 1024px) { .container { padding: 0 2rem; } }
+    section { padding: 5rem 0; scroll-margin-top: 80px; }
+    @media (min-width: 768px) { section { padding: 7rem 0; } }
+    .section-alt { background: var(--accent); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+
+    /* === SKIP LINK === */
+    .skip-link {
+      position: absolute; top: -100px; left: 12px; z-index: 100;
+      background: var(--primary); color: var(--primary-fg);
+      padding: 8px 16px; border-radius: 6px; font-size: 14px; font-weight: 500;
+    }
+    .skip-link:focus { top: 12px; }
+
+    /* === NAVBAR === */
+    .navbar {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 50;
+      transition: background 0.3s, border-color 0.3s, box-shadow 0.3s;
+      border-bottom: 1px solid transparent;
+    }
+    .navbar.scrolled {
+      background: color-mix(in srgb, var(--bg) 80%, transparent);
+      backdrop-filter: blur(12px);
+      border-bottom-color: var(--border);
+      box-shadow: var(--shadow);
+    }
+    .navbar-inner {
+      display: flex; align-items: center; justify-content: space-between;
+      height: 64px; gap: 1rem;
+    }
+    .nav-links { display: none; gap: 4px; }
+    @media (min-width: 768px) { .nav-links { display: flex; } }
+    .nav-links a {
+      padding: 8px 12px; font-size: 14px; font-weight: 500; color: var(--muted);
+      border-radius: 6px; transition: color 0.15s, background 0.15s; position: relative;
+    }
+    .nav-links a:hover { color: var(--fg); }
+    .nav-links a.active { color: var(--fg); }
+    .nav-links a.active::after {
+      content: ''; position: absolute; bottom: 0; left: 8px; right: 8px;
+      height: 2px; background: var(--primary); border-radius: 999px;
+    }
+    .nav-actions { display: flex; align-items: center; gap: 6px; }
+    .social-row { display: none; gap: 4px; }
+    @media (min-width: 640px) { .social-row { display: flex; } }
+    .icon-btn {
+      width: 36px; height: 36px; display: grid; place-items: center;
+      border-radius: 999px; color: var(--muted); transition: all 0.15s;
+    }
+    .icon-btn:hover { color: var(--fg); background: var(--accent); }
+    .icon-btn svg { width: 18px; height: 18px; }
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+      padding: 10px 16px; font-size: 14px; font-weight: 500; border-radius: 8px;
+      transition: all 0.15s; white-space: nowrap;
+    }
+    .btn-primary { background: var(--primary); color: var(--primary-fg); }
+    .btn-primary:hover { opacity: 0.9; transform: translateY(-1px); }
+    .btn-outline { border: 1px solid var(--border); color: var(--fg); }
+    .btn-outline:hover { background: var(--accent); }
+    .btn-ghost { color: var(--muted); }
+    .btn-ghost:hover { color: var(--fg); }
+    .btn-lg { padding: 12px 24px; font-size: 16px; }
+    .mobile-toggle { display: grid; place-items: center; width: 40px; height: 40px; border-radius: 8px; }
+    @media (min-width: 768px) { .mobile-toggle { display: none; } }
+
+    /* === MOBILE MENU === */
+    .mobile-menu { display: none; overflow: hidden; border-top: 1px solid var(--border); background: color-mix(in srgb, var(--bg) 95%, transparent); backdrop-filter: blur(12px); }
+    @media (max-width: 767px) { .mobile-menu.open { display: block; } }
+    .mobile-menu ul { padding: 12px 16px; }
+    .mobile-menu li button { width: 100%; text-align: left; padding: 10px 12px; font-size: 14px; font-weight: 500; border-radius: 6px; }
+    .mobile-menu li button:hover { background: var(--accent); }
+
+    /* === HERO === */
+    .hero { min-height: 100vh; display: flex; align-items: center; padding-top: 80px; padding-bottom: 64px; position: relative; overflow: hidden; }
+    .hero-grid { display: grid; gap: 2rem; align-items: center; }
+    @media (min-width: 1024px) { .hero-grid { grid-template-columns: 5fr 7fr; gap: 3rem; } }
+    .hero-photo-wrap { max-width: 260px; margin-right: auto; position: relative; }
+    @media (min-width: 640px) { .hero-photo-wrap { max-width: 320px; } }
+    @media (min-width: 1024px) { .hero-photo-wrap { max-width: 420px; } }
+    .hero-photo-glow {
+      position: absolute; inset: -24px; border-radius: 2rem;
+      background: linear-gradient(135deg, color-mix(in srgb, var(--primary) 20%, transparent), transparent);
+      filter: blur(40px); z-index: -1;
+    }
+    .hero-photo {
+      aspect-ratio: 4/5; border-radius: 2rem; overflow: hidden;
+      border: 1px solid var(--card-border); box-shadow: var(--shadow-lg);
+      background: var(--accent); position: relative;
+    }
+    .hero-photo img { width: 100%; height: 100%; object-fit: cover; }
+    .hero-photo-chip {
+      position: absolute; bottom: 12px; left: 12px; right: 12px;
+      background: rgba(0, 0, 0, 0.4); backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 12px;
+      padding: 8px 12px; color: white; font-size: 12px;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .pulse-dot { position: relative; width: 8px; height: 8px; }
+    .pulse-dot::before {
+      content: ''; position: absolute; inset: 0; border-radius: 50%;
+      background: var(--emerald); animation: ping 1.5s cubic-bezier(0,0,0.2,1) infinite;
+    }
+    .pulse-dot::after {
+      content: ''; position: absolute; inset: 0; border-radius: 50%; background: var(--emerald);
+    }
+    @keyframes ping { 75%, 100% { transform: scale(2); opacity: 0; } }
+    .hero-status {
+      display: inline-flex; align-items: center; gap: 8px;
+      border: 1px solid var(--border); background: var(--card); backdrop-filter: blur(8px);
+      padding: 4px 12px; border-radius: 999px; font-size: 12px; font-weight: 500; color: var(--muted);
+    }
+    .hero-h1 { margin-top: 20px; font-size: clamp(2.5rem, 5vw, 4.5rem); font-weight: 800; line-height: 1.05; letter-spacing: -0.02em; }
+    .hero-h1 .accent { color: var(--primary); }
+    .hero-title { margin-top: 20px; font-size: clamp(1.125rem, 2vw, 1.25rem); color: var(--muted); max-width: 42rem; }
+    .hero-title .tagline { display: block; margin-top: 4px; font-size: 0.875rem; color: color-mix(in srgb, var(--muted) 80%, transparent); }
+    .hero-ctas { margin-top: 28px; display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
+    .hero-loc { display: none; align-items: center; gap: 4px; margin-left: 4px; font-size: 14px; color: var(--muted); }
+    @media (min-width: 640px) { .hero-loc { display: flex; } }
+    .hero-stats { margin-top: 32px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; max-width: 28rem; }
+    .hero-stat { border: 1px solid var(--border); background: var(--card); backdrop-filter: blur(8px); border-radius: 12px; padding: 12px; }
+    .hero-stat-value { font-size: 20px; font-weight: 700; font-variant-numeric: tabular-nums; }
+    .hero-stat-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.05em; color: var(--muted); margin-top: 2px; }
+    .hero-socials { margin-top: 24px; display: flex; gap: 6px; }
+    .hero-socials a {
+      width: 40px; height: 40px; display: grid; place-items: center;
+      border: 1px solid var(--border); background: var(--card); backdrop-filter: blur(8px);
+      border-radius: 999px; color: var(--muted); transition: all 0.15s;
+    }
+    .hero-socials a:hover { color: var(--fg); border-color: var(--fg); background: var(--accent); }
+    .hero-socials a svg { width: 18px; height: 18px; }
+
+    /* === SECTION HEADING === */
+    .section-heading { max-width: 42rem; margin-bottom: 40px; }
+    .section-eyebrow { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.18em; color: color-mix(in srgb, var(--muted) 80%, transparent); margin-bottom: 8px; }
+    .section-title { font-size: clamp(1.875rem, 3vw, 2.75rem); font-weight: 700; line-height: 1.2; letter-spacing: -0.02em; }
+    .section-desc { margin-top: 16px; font-size: 1.125rem; color: var(--muted); line-height: 1.6; }
+
+    /* === ABOUT === */
+    .about-grid { display: grid; gap: 2rem; }
+    @media (min-width: 1024px) { .about-grid { grid-template-columns: 7fr 5fr; gap: 3rem; } }
+    .about-bio p { font-size: 1.0625rem; line-height: 1.7; margin-bottom: 1.25rem; }
+    .about-interests-label { display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 500; color: var(--muted); margin-top: 16px; margin-bottom: 12px; }
+    .badge-row { display: flex; flex-wrap: wrap; gap: 8px; }
+    .badge { display: inline-flex; align-items: center; padding: 4px 12px; border-radius: 999px; background: var(--accent); font-size: 12px; font-weight: 500; }
+    .badge-outline { border: 1px solid var(--border); background: transparent; }
+    .education-label { display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 600; margin-bottom: 16px; }
+    .education-label svg { color: var(--primary); }
+    .edu-item { display: flex; gap: 16px; margin-bottom: 16px; position: relative; }
+    .edu-item::before {
+      content: ''; position: absolute; left: 22px; top: 44px; bottom: -16px; width: 1px; background: var(--border);
+    }
+    .edu-item:last-child::before { display: none; }
+    .edu-icon { width: 44px; height: 44px; display: grid; place-items: center; border: 1px solid var(--border); border-radius: 999px; background: var(--bg); flex-shrink: 0; }
+    .edu-icon svg { color: var(--primary); }
+    .edu-card { border: 1px solid var(--border); background: var(--card); backdrop-filter: blur(8px); border-radius: 12px; padding: 16px; flex: 1; }
+    .edu-period { font-size: 12px; color: var(--muted); }
+    .edu-degree { font-size: 14px; font-weight: 600; margin-top: 4px; }
+    .edu-inst { font-size: 14px; color: var(--fg); opacity: 0.8; margin-top: 2px; }
+    .edu-desc { font-size: 12px; color: var(--muted); margin-top: 8px; line-height: 1.5; }
+
+    /* === SKILLS === */
+    .skills-grid { display: grid; gap: 1rem; }
+    @media (min-width: 640px) { .skills-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (min-width: 1024px) { .skills-grid { grid-template-columns: repeat(3, 1fr); } }
+    .skill-card { border: 1px solid var(--border); background: var(--card); backdrop-filter: blur(8px); border-radius: 12px; padding: 24px; transition: all 0.15s; }
+    .skill-card:hover { border-color: var(--fg); box-shadow: var(--shadow); }
+    .skill-card-head { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
+    .skill-icon { width: 40px; height: 40px; display: grid; place-items: center; border-radius: 8px; background: color-mix(in srgb, var(--primary) 10%, transparent); color: var(--primary); }
+    .skill-icon svg { width: 20px; height: 20px; }
+    .skill-title { font-size: 14px; font-weight: 600; }
+    .skill-desc { font-size: 12px; color: var(--muted); margin-bottom: 16px; line-height: 1.5; }
+    .skill-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+    .chip { display: inline-flex; padding: 2px 8px; border: 1px solid var(--border); background: var(--bg); border-radius: 6px; font-size: 11px; font-weight: 500; }
+    .chip:hover { border-color: var(--fg); background: var(--accent); }
+
+    /* === EXPERIENCE === */
+    .exp-item { border: 1px solid var(--border); background: var(--card); backdrop-filter: blur(8px); border-radius: 12px; padding: 24px; margin-bottom: 20px; transition: border-color 0.15s; }
+    .exp-item:hover { border-color: var(--fg); }
+    .exp-grid { display: grid; gap: 16px; }
+    @media (min-width: 640px) { .exp-grid { grid-template-columns: 3fr 9fr; } }
+    .exp-period { font-size: 12px; font-weight: 500; color: var(--primary); }
+    .exp-loc { display: flex; align-items: center; gap: 4px; font-size: 12px; color: var(--muted); margin-top: 4px; }
+    .exp-loc svg { width: 12px; height: 12px; }
+    .exp-role { font-size: 16px; font-weight: 600; }
+    .exp-org { font-size: 14px; color: var(--fg); opacity: 0.8; }
+    .exp-desc { font-size: 14px; color: var(--muted); margin-top: 8px; line-height: 1.6; }
+    .exp-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px; }
+
+    /* === RESEARCH TABS === */
+    .tabs { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 32px; }
+    .tab {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 6px 14px; border-radius: 999px; border: 1px solid var(--border);
+      background: var(--bg); font-size: 14px; font-weight: 500; color: var(--muted); transition: all 0.15s;
+    }
+    .tab:hover { color: var(--fg); background: var(--accent); }
+    .tab.active { background: var(--primary); color: var(--primary-fg); border-color: var(--primary); }
+    .tab svg { width: 14px; height: 14px; }
+    .tab-count { font-size: 10px; font-variant-numeric: tabular-nums; opacity: 0.7; }
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; }
+
+    .pub-item { border: 1px solid var(--border); background: var(--card); backdrop-filter: blur(8px); border-radius: 12px; padding: 16px 20px; margin-bottom: 12px; }
+    .pub-head { display: flex; gap: 16px; align-items: flex-start; }
+    .pub-year { padding: 4px 8px; border: 1px solid var(--border); border-radius: 6px; font-family: monospace; font-size: 11px; font-variant-numeric: tabular-nums; flex-shrink: 0; }
+    .pub-title { font-size: 15px; font-weight: 600; line-height: 1.4; }
+    .pub-venue { font-size: 12px; color: var(--muted); font-style: italic; margin-top: 4px; }
+    .pub-authors { font-size: 12px; color: var(--fg); opacity: 0.7; margin-top: 4px; }
+    .pub-link { width: 32px; height: 32px; display: grid; place-items: center; border: 1px solid var(--border); border-radius: 999px; color: var(--muted); flex-shrink: 0; transition: all 0.15s; }
+    .pub-link:hover { color: var(--fg); border-color: var(--fg); }
+    .pub-link svg { width: 14px; height: 14px; }
+
+    .ongoing-grid { display: grid; gap: 1rem; }
+    @media (min-width: 640px) { .ongoing-grid { grid-template-columns: repeat(2, 1fr); } }
+    .ongoing-card { border: 1px solid var(--border); background: var(--card); backdrop-filter: blur(8px); border-radius: 12px; padding: 20px; }
+    .ongoing-head { display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--primary); margin-bottom: 8px; }
+    .ongoing-head svg { width: 14px; height: 14px; animation: spin 3.5s linear infinite; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .ongoing-title { font-size: 14px; font-weight: 600; }
+    .ongoing-role { font-size: 12px; color: var(--muted); }
+    .ongoing-desc { font-size: 12px; color: var(--muted); margin-top: 8px; line-height: 1.5; }
+
+    .conf-item { display: flex; align-items: center; gap: 16px; border: 1px solid var(--border); background: var(--card); backdrop-filter: blur(8px); border-radius: 12px; padding: 16px; margin-bottom: 12px; }
+    .conf-icon { width: 44px; height: 44px; display: grid; place-items: center; border: 1px solid var(--border); border-radius: 999px; background: var(--bg); flex-shrink: 0; }
+    .conf-icon svg { color: var(--primary); width: 16px; height: 16px; }
+    .conf-title { font-size: 14px; font-weight: 500; }
+    .conf-venue { font-size: 12px; color: var(--muted); }
+    .conf-note { display: inline-flex; align-items: center; gap: 4px; padding: 2px 8px; border-radius: 6px; background: var(--accent); font-size: 11px; font-weight: 500; }
+    .conf-note svg { width: 12px; height: 12px; }
+    .conf-year { padding: 4px 8px; border: 1px solid var(--border); border-radius: 6px; font-family: monospace; font-size: 11px; flex-shrink: 0; }
+
+    .cert-grid { display: grid; gap: 12px; }
+    @media (min-width: 640px) { .cert-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (min-width: 1024px) { .cert-grid { grid-template-columns: repeat(3, 1fr); } }
+    .cert-card { border: 1px solid var(--border); background: var(--card); backdrop-filter: blur(8px); border-radius: 12px; padding: 20px; transition: border-color 0.15s; }
+    .cert-card:hover { border-color: var(--fg); }
+    .cert-icon { color: var(--primary); margin-bottom: 12px; }
+    .cert-icon svg { width: 20px; height: 20px; }
+    .cert-title { font-size: 14px; font-weight: 600; }
+    .cert-issuer { font-size: 12px; color: var(--muted); margin-top: 4px; }
+    .cert-year { font-size: 12px; font-family: monospace; color: color-mix(in srgb, var(--muted) 70%, transparent); margin-top: 12px; }
+
+    /* === ACTIVITIES === */
+    .services-grid { display: grid; gap: 1rem; margin-bottom: 48px; }
+    @media (min-width: 640px) { .services-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (min-width: 1024px) { .services-grid { grid-template-columns: repeat(4, 1fr); } }
+    .service-card { border: 1px solid var(--border); background: var(--card); backdrop-filter: blur(8px); border-radius: 12px; padding: 20px; transition: all 0.15s; }
+    .service-card:hover { border-color: var(--fg); box-shadow: var(--shadow); }
+    .service-icon { width: 40px; height: 40px; display: grid; place-items: center; border-radius: 8px; background: color-mix(in srgb, var(--primary) 10%, transparent); color: var(--primary); margin-bottom: 16px; }
+    .service-icon svg { width: 20px; height: 20px; }
+    .service-title { font-size: 14px; font-weight: 600; }
+    .service-desc { font-size: 12px; color: var(--muted); margin-top: 8px; line-height: 1.5; }
+
+    .sub-label { display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.12em; color: var(--muted); margin-bottom: 16px; }
+    .sub-label svg { color: var(--primary); width: 16px; height: 16px; }
+    .award-grid { display: grid; gap: 12px; margin-bottom: 48px; }
+    @media (min-width: 640px) { .award-grid { grid-template-columns: repeat(2, 1fr); } }
+    .award-card { border: 1px solid var(--border); background: var(--card); backdrop-filter: blur(8px); border-radius: 12px; padding: 16px; display: flex; gap: 12px; align-items: flex-start; }
+    .award-icon { width: 40px; height: 40px; display: grid; place-items: center; border-radius: 999px; background: color-mix(in srgb, var(--primary) 10%, transparent); color: var(--primary); flex-shrink: 0; }
+    .award-icon svg { width: 16px; height: 16px; }
+    .award-title { font-size: 14px; font-weight: 600; }
+    .award-org { font-size: 12px; color: var(--fg); opacity: 0.8; }
+    .award-desc { font-size: 12px; color: var(--muted); margin-top: 6px; line-height: 1.5; }
+    .award-period { padding: 4px 8px; border: 1px solid var(--border); border-radius: 6px; font-family: monospace; font-size: 11px; flex-shrink: 0; }
+
+    .activity-grid { display: grid; gap: 2rem; }
+    @media (min-width: 1024px) { .activity-grid { grid-template-columns: repeat(2, 1fr); } }
+    .activity-item { border: 1px solid var(--border); background: var(--card); backdrop-filter: blur(8px); border-radius: 12px; padding: 16px; margin-bottom: 12px; }
+    .activity-head { display: flex; justify-content: space-between; gap: 12px; align-items: flex-start; }
+    .activity-role { font-size: 14px; font-weight: 600; }
+    .activity-org { font-size: 12px; color: var(--fg); opacity: 0.8; }
+    .activity-desc { font-size: 12px; color: var(--muted); margin-top: 8px; line-height: 1.5; }
+
+    /* === CONTACT === */
+    .contact-grid { display: grid; gap: 24px; }
+    @media (min-width: 1024px) { .contact-grid { grid-template-columns: 7fr 5fr; } }
+    .contact-cta { border: 1px solid var(--border); background: linear-gradient(135deg, var(--card), transparent); backdrop-filter: blur(8px); border-radius: 16px; padding: 32px; position: relative; overflow: hidden; }
+    .contact-cta::before { content: ''; position: absolute; top: -48px; right: -48px; width: 192px; height: 192px; border-radius: 50%; background: color-mix(in srgb, var(--primary) 10%, transparent); filter: blur(40px); }
+    .contact-eyebrow { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.18em; color: var(--muted); margin-bottom: 8px; }
+    .contact-h3 { font-size: 24px; font-weight: 700; line-height: 1.2; }
+    @media (min-width: 640px) { .contact-h3 { font-size: 30px; } }
+    .contact-p { font-size: 14px; color: var(--muted); margin-top: 12px; line-height: 1.6; }
+    .contact-btns { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 24px; }
+    .contact-info { margin-top: 32px; display: grid; gap: 12px; }
+    @media (min-width: 640px) { .contact-info { grid-template-columns: repeat(2, 1fr); } }
+    .contact-info-item { display: flex; align-items: center; gap: 12px; border: 1px solid var(--border); background: var(--bg); border-radius: 8px; padding: 12px; }
+    .contact-info-item svg { color: var(--primary); flex-shrink: 0; }
+    .contact-info-item a { font-size: 14px; font-weight: 500; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .contact-info-item a:hover { text-decoration: underline; }
+    .contact-info-full { grid-column: 1 / -1; align-items: flex-start; }
+    .contact-info-full span { font-size: 14px; color: var(--muted); line-height: 1.5; }
+    .contact-socials-label { font-size: 14px; font-weight: 600; margin-bottom: 12px; }
+    .contact-socials-list { display: grid; gap: 10px; }
+    .contact-social-link { display: flex; align-items: center; justify-content: space-between; gap: 12px; border: 1px solid var(--border); background: var(--card); backdrop-filter: blur(8px); border-radius: 12px; padding: 16px; transition: all 0.15s; }
+    .contact-social-link:hover { border-color: var(--fg); background: var(--accent); }
+    .contact-social-left { display: flex; align-items: center; gap: 12px; }
+    .contact-social-icon { width: 40px; height: 40px; display: grid; place-items: center; border: 1px solid var(--border); border-radius: 999px; background: var(--bg); }
+    .contact-social-icon svg { width: 18px; height: 18px; }
+    .contact-social-name { font-size: 14px; font-weight: 500; }
+    .contact-social-host { font-size: 12px; color: var(--muted); }
+    .contact-social-arrow { color: var(--muted); transition: transform 0.15s; }
+    .contact-social-link:hover .contact-social-arrow { color: var(--fg); transform: translate(2px, -2px); }
+
+    /* === FOOTER === */
+    .footer { border-top: 1px solid var(--border); background: var(--bg); padding: 32px 0; margin-top: auto; }
+    .footer-inner { display: flex; flex-direction: column; align-items: center; justify-content: space-between; gap: 16px; }
+    @media (min-width: 640px) { .footer-inner { flex-direction: row; } }
+    .footer-brand { display: flex; align-items: center; gap: 10px; }
+    .footer-badge { width: 32px; height: 32px; display: grid; place-items: center; background: var(--primary); color: var(--primary-fg); border-radius: 8px; font-weight: 700; font-size: 12px; }
+    .footer-name { font-size: 14px; font-weight: 500; }
+    .footer-copy { font-size: 12px; color: var(--muted); text-align: center; }
+    .footer-socials { display: flex; gap: 2px; align-items: center; }
+    .footer-socials a { width: 36px; height: 36px; display: grid; place-items: center; border-radius: 999px; color: var(--muted); transition: all 0.15s; }
+    .footer-socials a:hover { color: var(--fg); background: var(--accent); }
+    .footer-socials a svg { width: 16px; height: 16px; }
+
+    /* === SHARE DROPDOWN === */
+    .share-dropdown { position: relative; }
+    .share-menu {
+      position: absolute; top: calc(100% + 4px); right: 0; z-index: 60;
+      min-width: 256px; background: var(--bg); border: 1px solid var(--border);
+      border-radius: 12px; box-shadow: var(--shadow-lg); padding: 8px;
+      display: none;
+    }
+    .share-menu.open { display: block; }
+    .share-menu-label { font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); padding: 8px 12px 4px; }
+    .share-menu-sep { height: 1px; background: var(--border); margin: 4px 0; }
+    .share-menu-item { display: flex; align-items: center; gap: 10px; padding: 8px 12px; border-radius: 8px; font-size: 14px; cursor: pointer; transition: background 0.15s; }
+    .share-menu-item:hover { background: var(--accent); }
+    .share-menu-item svg { width: 16px; height: 16px; }
+
+    /* === ANIMATIONS === */
+    @media (prefers-reduced-motion: no-preference) {
+      .fade-in { animation: fadeIn 0.6s ease-out backwards; }
+      @keyframes fadeIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+      .hero-photo-wrap { animation: photoPop 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.15s backwards; }
+      @keyframes photoPop { from { opacity: 0; transform: scale(0.7) translateY(40px); } to { opacity: 1; transform: scale(1) translateY(0); } }
+      .hero-h1 { animation: slideRight 0.75s cubic-bezier(0.22, 1, 0.36, 1) 0.45s backwards; }
+      @keyframes slideRight { from { opacity: 0; transform: translateX(-80px); } to { opacity: 1; transform: translateX(0); } }
+    }
+
+    /* === SCROLL HINT === */
+    .scroll-hint { display: none; position: absolute; bottom: 24px; left: 50%; transform: translateX(-50%); flex-direction: column; align-items: center; gap: 8px; font-size: 12px; color: var(--muted); }
+    @media (min-width: 768px) { .scroll-hint { display: flex; } }
+    .scroll-hint-circle { width: 36px; height: 36px; display: grid; place-items: center; border: 1px solid var(--border); border-radius: 999px; }
+    .scroll-hint-circle svg { animation: bounce 1.5s infinite; }
+    @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(4px); } }
+  </style>
+</head>
+<body>
+  <a href="#main" class="skip-link">Skip to content</a>
+
+  <!-- ===== NAVBAR ===== -->
+  <header class="navbar" id="navbar">
+    <div class="container">
+      <div class="navbar-inner">
+        <nav class="nav-links" aria-label="Primary">
+          <a href="#about">About</a>
+          <a href="#skills">Skills</a>
+          <a href="#experience">Experience</a>
+          <a href="#research">Research</a>
+          <a href="#services">Activities</a>
+          <a href="#contact">Contact</a>
+        </nav>
+        <button class="mobile-toggle" id="mobileToggle" aria-label="Toggle menu">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+        </button>
+        <div class="nav-actions">
+          <div class="social-row">
+            <a href="https://www.linkedin.com/in/santu-biswas" target="_blank" rel="noopener" class="icon-btn" aria-label="LinkedIn">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 0h-14c-2.76 0-5 2.24-5 5v14c0 2.76 2.24 5 5 5h14c2.76 0 5-2.24 5-5v-14c0-2.76-2.24-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.25c-.97 0-1.75-.78-1.75-1.75s.78-1.75 1.75-1.75 1.75.78 1.75 1.75-.78 1.75-1.75 1.75zm13.5 12.25h-3v-5.5c0-1.5-.5-2.5-1.5-2.5s-1.5 1-1.5 2.5v5.5h-3v-11h3v1.5c.5-.75 1.5-1.5 3-1.5 2 0 3.5 1.5 3.5 4.5v6.5z"/></svg>
+            </a>
+            <a href="https://scholar.google.com/" target="_blank" rel="noopener" class="icon-btn" aria-label="Google Scholar">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M5.242 13.769L0 9.5 12 0l12 9.5-5.242 4.269C17.548 11.249 14.978 9.5 12 9.5c-2.977 0-5.548 1.749-6.758 4.269zM12 10a7 7 0 1 0 0 14 7 7 0 0 0 0-14z"/></svg>
+            </a>
+            <a href="https://orcid.org/" target="_blank" rel="noopener" class="icon-btn" aria-label="ORCID">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12s5.37 12 12 12 12-5.37 12-12S18.63 0 12 0zM7.264 5.27c.46 0 .832.372.832.833s-.372.833-.832.833a.833.833 0 1 1 0-1.666zm-.222 2.916h1.667v9.723H7.042V8.186zm4.182 0h3.334c3.18 0 5.139 2.36 5.139 4.86s-1.959 4.86-5.139 4.86h-3.334V8.186zm1.667 1.5v7.36h1.667c2.667 0 3.778-1.875 3.778-3.68s-1.111-3.68-3.778-3.68h-1.667z"/></svg>
+            </a>
+          </div>
+          <!-- Share dropdown -->
+          <div class="share-dropdown">
+            <button class="icon-btn" id="shareBtn" aria-label="Share" aria-haspopup="true" aria-expanded="false">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+            </button>
+            <div class="share-menu" id="shareMenu" role="menu">
+              <div class="share-menu-label">Share this portfolio</div>
+              <div class="share-menu-sep"></div>
+              <button class="share-menu-item" data-action="copy">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                <span>Copy link</span>
+              </button>
+              <button class="share-menu-item" data-action="linkedin">
+                <svg viewBox="0 0 24 24" fill="#0a66c2"><path d="M19 0h-14c-2.76 0-5 2.24-5 5v14c0 2.76 2.24 5 5 5h14c2.76 0 5-2.24 5-5v-14c0-2.76-2.24-5-5-5z"/></svg>
+                <span>Share on LinkedIn</span>
+              </button>
+              <button class="share-menu-item" data-action="twitter">
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                <span>Share on X / Twitter</span>
+              </button>
+              <button class="share-menu-item" data-action="whatsapp">
+                <svg viewBox="0 0 24 24" fill="#25d366"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.149-.197.297-.767.967-.94 1.164-.173.199-.347.223-.644.075-.297-.149-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.207-.242-.579-.487-.5-.669-.51l-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/></svg>
+                <span>Share on WhatsApp</span>
+              </button>
+              <div class="share-menu-sep"></div>
+              <button class="share-menu-item" data-action="qr">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><line x1="14" y1="14" x2="14" y2="21"/><line x1="18" y1="14" x2="21" y2="14"/><line x1="21" y1="18" x2="21" y2="21"/></svg>
+                <span>Download QR code</span>
+              </button>
+            </div>
+          </div>
+          <!-- Theme toggle -->
+          <button class="icon-btn" id="themeToggle" aria-label="Toggle theme">
+            <svg id="themeIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+          </button>
+          <a href="#contact" class="btn btn-primary" style="display: none;">Let's talk</a>
+          <button class="btn btn-primary" style="display: none;" id="letsTalkBtn">Let's talk</button>
+        </div>
+      </div>
+    </div>
+    <div class="mobile-menu" id="mobileMenu">
+      <ul>
+        <li><button data-nav="#about">About</button></li>
+        <li><button data-nav="#skills">Skills</button></li>
+        <li><button data-nav="#experience">Experience</button></li>
+        <li><button data-nav="#research">Research</button></li>
+        <li><button data-nav="#services">Activities</button></li>
+        <li><button data-nav="#contact">Contact</button></li>
+      </ul>
+    </div>
+  </header>
+
+  <main id="main">
+    <!-- ===== HERO ===== -->
+    <section class="hero" id="hero">
+      <div class="container">
+        <div class="hero-grid">
+          <div class="hero-photo-wrap">
+            <div class="hero-photo-glow"></div>
+            <div class="hero-photo">
+              <img src="santu-photo.jpg" alt="Santu Biswas — Molecular Microbiologist & Bioinformatician" />
+              <div class="hero-photo-chip">
+                <span class="pulse-dot"></span>
+                <span>Gazipur Agricultural University, Bangladesh</span>
+              </div>
+            </div>
+          </div>
+          <div>
+            <div class="hero-status fade-in">
+              <span class="pulse-dot"></span>
+              Open to research collaborations &amp; speaking invitations
+            </div>
+            <h1 class="hero-h1">
+              Hello, I'm <span class="accent">Santu</span><br />Biswas<span style="color: var(--primary);">.</span>
+            </h1>
+            <p class="hero-title">
+              Molecular Microbiologist &amp; Bioinformatician
+              <span class="tagline">Applying molecular microbiology, bacterial genomics, and bioinformatics to characterize fish pathogens, track antimicrobial resistance, and discover in silico drug targets for sustainable aquaculture.</span>
+            </p>
+            <div class="hero-ctas">
+              <a href="santu-biswas-cv.pdf" target="_blank" class="btn btn-primary btn-lg">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                Download CV
+              </a>
+              <a href="#research" class="btn btn-outline btn-lg">Explore My Research</a>
+              <a href="#contact" class="btn btn-ghost btn-lg">Contact Me</a>
+              <span class="hero-loc">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                Gazipur Agricultural University, Bangladesh
+              </span>
+            </div>
+            <div class="hero-stats">
+              <div class="hero-stat"><div class="hero-stat-value">150+</div><div class="hero-stat-label">Bacterial isolates processed</div></div>
+              <div class="hero-stat"><div class="hero-stat-value">4</div><div class="hero-stat-label">Conferences</div></div>
+              <div class="hero-stat"><div class="hero-stat-value">3</div><div class="hero-stat-label">Awards &amp; Honours</div></div>
+            </div>
+            <div class="hero-socials">
+              <a href="https://www.linkedin.com/in/santu-biswas" target="_blank" rel="noopener" aria-label="LinkedIn">
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 0h-14c-2.76 0-5 2.24-5 5v14c0 2.76 2.24 5 5 5h14c2.76 0 5-2.24 5-5v-14c0-2.76-2.24-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.25c-.97 0-1.75-.78-1.75-1.75s.78-1.75 1.75-1.75 1.75.78 1.75 1.75-.78 1.75-1.75 1.75zm13.5 12.25h-3v-5.5c0-1.5-.5-2.5-1.5-2.5s-1.5 1-1.5 2.5v5.5h-3v-11h3v1.5c.5-.75 1.5-1.5 3-1.5 2 0 3.5 1.5 3.5 4.5v6.5z"/></svg>
+              </a>
+              <a href="https://scholar.google.com/" target="_blank" rel="noopener" aria-label="Google Scholar">
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M5.242 13.769L0 9.5 12 0l12 9.5-5.242 4.269C17.548 11.249 14.978 9.5 12 9.5c-2.977 0-5.548 1.749-6.758 4.269zM12 10a7 7 0 1 0 0 14 7 7 0 0 0 0-14z"/></svg>
+              </a>
+              <a href="https://orcid.org/" target="_blank" rel="noopener" aria-label="ORCID">
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12s5.37 12 12 12 12-5.37 12-12S18.63 0 12 0zM7.264 5.27c.46 0 .832.372.832.833s-.372.833-.832.833a.833.833 0 1 1 0-1.666zm-.222 2.916h1.667v9.723H7.042V8.186zm4.182 0h3.334c3.18 0 5.139 2.36 5.139 4.86s-1.959 4.86-5.139 4.86h-3.334V8.186zm1.667 1.5v7.36h1.667c2.667 0 3.778-1.875 3.778-3.68s-1.111-3.68-3.778-3.68h-1.667z"/></svg>
+              </a>
+              <a href="https://www.researchgate.net/" target="_blank" rel="noopener" aria-label="ResearchGate">
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19.586 17.05c-.258-.128-.486-.257-.715-.386-.36-.18-.66-.36-.96-.51-.93-.49-1.93-1.04-2.83-1.79.27-.41.5-.83.69-1.25.4-.97.62-2.04.62-3.16 0-1.31-.27-2.5-.78-3.55-.49-1.01-1.2-1.88-2.12-2.55-.92-.67-2.01-1.16-3.21-1.42-.55-.12-1.13-.18-1.71-.18-1.34 0-2.59.27-3.69.79-1.1.52-2.04 1.27-2.78 2.2-.74.93-1.28 2.04-1.59 3.28-.16.62-.24 1.26-.24 1.9 0 1.18.22 2.28.65 3.26.43.98 1.04 1.83 1.82 2.51.77.68 1.69 1.21 2.73 1.56 1.04.35 2.18.51 3.37.48.69-.02 1.36-.12 2-.3.27.27.56.51.86.74-.49.16-.99.27-1.5.34-1.16.15-2.34.05-3.46-.3-1.12-.35-2.13-.92-3-1.69-.87-.77-1.55-1.71-2.04-2.78-.49-1.07-.74-2.26-.74-3.53 0-1.21.22-2.34.65-3.37.43-1.03 1.04-1.93 1.82-2.69.78-.76 1.69-1.35 2.73-1.78 1.04-.43 2.16-.65 3.37-.65 1.04 0 2.04.17 2.98.51.94.34 1.78.82 2.51 1.44.73.62 1.31 1.36 1.73 2.22.42.86.64 1.81.64 2.83 0 .93-.16 1.81-.48 2.62-.32.81-.78 1.54-1.37 2.18-.59.64-1.28 1.16-2.08 1.56.18.12.37.23.55.34 1.13.69 2.32 1.18 3.55 1.49.62.16 1.26.26 1.9.32.34.03.69.04 1.04.04.16 0 .32 0 .48-.01.08 0 .16-.01.24-.01.16-.01.32-.03.48-.05.16-.02.32-.05.48-.08.16-.03.32-.07.48-.11.16-.04.32-.09.48-.14.16-.05.32-.11.48-.17.08-.03.16-.06.24-.09.08-.03.16-.07.24-.1z"/></svg>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <button class="scroll-hint" data-nav="#about" aria-label="Scroll to about">
+        <span>Scroll</span>
+        <span class="scroll-hint-circle">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/></svg>
+        </span>
+      </button>
+    </section>
+
+    <!-- ===== ABOUT ===== -->
+    <section id="about">
+      <div class="container">
+        <div class="section-heading">
+          <div class="section-eyebrow">01 — About</div>
+          <h2 class="section-title">About Me</h2>
+        </div>
+        <div class="about-grid">
+          <div class="about-bio">
+            <p>I am a molecular microbiologist and bioinformatician pursuing an M.S. in Biotechnology and Genetic Engineering at Gazipur Agricultural University, Bangladesh. My research focuses on characterizing fish-pathogenic bacteria — particularly <em>Streptococcus agalactiae</em> — through whole-genome sequencing, comparative genomics, and in silico drug target analysis, with the goal of advancing disease control in sustainable tilapia aquaculture.</p>
+            <p>My work integrates wet-lab molecular microbiology — PCR, DNA extraction, bacterial culture, primer design — with computational genomics and bioinformatics pipelines. Through my graduate research at the Institute of Biotechnology and Genetic Engineering (IBGE) lab, I have processed over 150 bacterial isolates from diseased fish, designed species-specific PCR primers for rapid <em>Streptococcus</em> detection, and contributed to multiple peer-reviewed genome announcements in ASM's Microbiology Resource Announcements. I am also deeply engaged in scientific outreach — serving as Bioinformatics Campus Coordinator for Dawn of Bioinformatics and as a contributing member of the American Society for Microbiology's Global Outreach network.</p>
+            <div class="about-interests-label">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v18M3 12h18"/></svg>
+              Research Interests
+            </div>
+            <div class="badge-row">
+              <span class="badge">Molecular Microbiology</span>
+              <span class="badge">Fish Pathogens</span>
+              <span class="badge">Bacterial Genomics</span>
+              <span class="badge">Comparative Genomics</span>
+              <span class="badge">Host–Pathogen Interactions</span>
+              <span class="badge">Bioinformatics</span>
+              <span class="badge">Antimicrobial Resistance</span>
+              <span class="badge">Drug Target Discovery</span>
+            </div>
+            <div style="margin-top: 16px;">
+              <a href="santu-biswas-cv.pdf" target="_blank" class="btn btn-primary">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                Download full CV
+              </a>
+            </div>
+          </div>
+          <div>
+            <div class="education-label">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+              Education
+            </div>
+            <div class="edu-item">
+              <div class="edu-icon">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+              </div>
+              <div class="edu-card">
+                <div class="edu-period">2024 – Present</div>
+                <div class="edu-degree">M.S. in Biotechnology and Genetic Engineering (CGPA 3.81/4.00)</div>
+                <div class="edu-inst">Institute of Biotechnology and Genetic Engineering, Gazipur Agricultural University (GAU), Gazipur-1706, Bangladesh</div>
+                <div class="edu-desc">Thesis: "Genomic Characterization, Point-of-Care Detection, and In Silico Drug Target Analysis of Streptococcus agalactiae Causing Streptococcosis in Tilapia."</div>
+              </div>
+            </div>
+            <div class="edu-item">
+              <div class="edu-icon">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+              </div>
+              <div class="edu-card">
+                <div class="edu-period">2019 – 2022</div>
+                <div class="edu-degree">B.S. in Fisheries (CGPA 3.57/4.00)</div>
+                <div class="edu-inst">Department of Fisheries and Marine Bioscience, Gopalganj Science and Technology University (GSTU), Gopalganj-8105, Bangladesh</div>
+                <div class="edu-desc">Thesis: "Distribution and Potential Ecological Risk of Suckermouth Catfish Invasion in Bangladesh."</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== SKILLS ===== -->
+    <section id="skills">
+      <div class="container">
+        <div class="section-heading">
+          <div class="section-eyebrow">02 — Skills</div>
+          <h2 class="section-title">Technical Skills</h2>
+          <p class="section-desc">A hybrid toolkit spanning molecular microbiology wet-lab workflows and computational genomics — bridging the bench and the bioinformatics pipeline.</p>
+        </div>
+        <div class="skills-grid">
+          <div class="skill-card">
+            <div class="skill-card-head"><div class="skill-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 2v6M15 2v6M9 8h6M5 22h14a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2z"/></svg></div><div class="skill-title">Molecular Biology &amp; Microbiology</div></div>
+            <p class="skill-desc">Wet-lab workflows for bacterial isolation, characterization, and detection.</p>
+            <div class="skill-chips">
+              <span class="chip">Bacterial isolation, culture &amp; preservation</span>
+              <span class="chip">Phenotypic &amp; biochemical characterization</span>
+              <span class="chip">Genomic DNA/RNA extraction</span>
+              <span class="chip">Conventional PCR &amp; RT-PCR</span>
+              <span class="chip">Agarose gel electrophoresis</span>
+              <span class="chip">Primer design &amp; validation</span>
+              <span class="chip">Antimicrobial susceptibility testing (AST)</span>
+              <span class="chip">Aseptic technique &amp; biosafety</span>
+            </div>
+          </div>
+          <div class="skill-card">
+            <div class="skill-card-head"><div class="skill-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4c4 8 8 8 12 0M4 20c4-8 8-8 12 0M4 8c4 8 8 8 12 0M4 16c4-8 8-8 12 0"/></svg></div><div class="skill-title">Genomics &amp; Bioinformatics</div></div>
+            <p class="skill-desc">End-to-end genome analysis from raw reads to comparative insights.</p>
+            <div class="skill-chips">
+              <span class="chip">Whole-genome assembly &amp; quality assessment</span>
+              <span class="chip">Genome annotation (Prokka, BUSCO)</span>
+              <span class="chip">Comparative &amp; pan-genome analysis (Roary)</span>
+              <span class="chip">Phylogenetic analysis (FastTree, MEGA)</span>
+              <span class="chip">Average nucleotide identity (ANI)</span>
+              <span class="chip">Virulence factor &amp; AMR gene identification (ABRicate)</span>
+              <span class="chip">Plasmid identification</span>
+            </div>
+          </div>
+          <div class="skill-card">
+            <div class="skill-card-head"><div class="skill-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></div><div class="skill-title">Programming &amp; Computing</div></div>
+            <p class="skill-desc">Scripting and reproducible analysis on Linux workstations.</p>
+            <div class="skill-chips">
+              <span class="chip">R &amp; RStudio</span>
+              <span class="chip">Python</span>
+              <span class="chip">Linux command line (Bash)</span>
+              <span class="chip">Reproducible analysis pipelines</span>
+            </div>
+          </div>
+          <div class="skill-card">
+            <div class="skill-card-head"><div class="skill-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="1"/><path d="M20.2 20.2c2.04-2.03.02-7.36-4.5-11.88-4.52-4.52-9.85-6.54-11.88-4.5-2.03 2.03-.02 7.36 4.5 11.88 4.52 4.52 9.85 6.54 11.88 4.5z"/><path d="M15.7 15.7c2.03-2.04.02-7.36-4.5-11.88"/><path d="M8.3 8.3c-2.03 2.04-.02 7.36 4.5 11.88"/></svg></div><div class="skill-title">Molecular Modeling &amp; Drug Discovery</div></div>
+            <p class="skill-desc">In silico target identification and structural analysis.</p>
+            <div class="skill-chips">
+              <span class="chip">Molecular docking (AutoDock Vina)</span>
+              <span class="chip">Protein structure visualization (PyMOL, BIOVIA Discovery Studio)</span>
+              <span class="chip">Protein structure prediction (AlphaFold)</span>
+              <span class="chip">In silico drug target analysis</span>
+            </div>
+          </div>
+          <div class="skill-card">
+            <div class="skill-card-head"><div class="skill-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 2v6M15 2v6M9 8h6"/><path d="M5 22h14a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2z"/></svg></div><div class="skill-title">Bioinformatics Tools &amp; Scientific Visualization</div></div>
+            <p class="skill-desc">Specialised software for sequence, genome, and ecological data.</p>
+            <div class="skill-chips">
+              <span class="chip">BLAST &amp; Primer-BLAST</span>
+              <span class="chip">MEGA, BioEdit, Geneious Prime, Benchling</span>
+              <span class="chip">FastQC, Trimmomatic, SPAdes, QUAST, Kraken2</span>
+              <span class="chip">ArcGIS &amp; Google Earth (ecological mapping)</span>
+              <span class="chip">BioRender (scientific illustration)</span>
+              <span class="chip">MS Word, Excel, PowerPoint</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== EXPERIENCE ===== -->
+    <section id="experience" class="section-alt">
+      <div class="container">
+        <div class="section-heading">
+          <div class="section-eyebrow">03 — Experience</div>
+          <h2 class="section-title">Research Experience</h2>
+          <p class="section-desc">A timeline of research assistantships — spanning wet-lab molecular microbiology and field ecology — with the techniques, tools, and skills I developed along the way.</p>
+        </div>
+        <div class="exp-item">
+          <div class="exp-grid">
+            <div>
+              <div class="exp-period">Feb 2024 – Present</div>
+              <div class="exp-loc"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg> Gazipur-1706, Bangladesh</div>
+            </div>
+            <div>
+              <div class="exp-role">Graduate Research Assistant</div>
+              <div class="exp-org">Institute of Biotechnology and Genetic Engineering (IBGE) Lab, Gazipur Agricultural University</div>
+              <p class="exp-desc">Conducting molecular and microbiological experiments for the characterization of fish-pathogenic bacteria using PCR, DNA extraction, bacterial culture, and genome analysis. Maintained and processed over 150 bacterial isolates from diseased fish for genomic and molecular analyses; performed DNA extraction, PCR, and gel electrophoresis; designed and validated species-specific PCR primers for rapid detection of <em>Streptococcus</em> spp.; prepared reagents, managed lab inventory, and followed biosafety protocols; contributed to multiple peer-reviewed manuscripts through collaborative scientific writing.</p>
+              <div class="exp-tags">
+                <span class="badge badge-outline">Molecular Microbiology</span>
+                <span class="badge badge-outline">PCR</span>
+                <span class="badge badge-outline">Primer Design</span>
+                <span class="badge badge-outline">Genomics</span>
+                <span class="badge badge-outline">Streptococcus</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="exp-item">
+          <div class="exp-grid">
+            <div>
+              <div class="exp-period">2023 – 2024</div>
+              <div class="exp-loc"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg> Gopalganj-8100, Bangladesh</div>
+            </div>
+            <div>
+              <div class="exp-role">Research Assistant</div>
+              <div class="exp-org">Department of Fisheries and Marine Bioscience, Gopalganj Science and Technology University (GSTU)</div>
+              <p class="exp-desc">Designed and conducted field surveys across regions invaded by suckermouth catfish; collected ecological data on species presence, habitat conditions, and environmental parameters; analyzed distribution patterns and ecological risks using field and survey tools; collaborated with local fishers and Union Fisheries Officers for ground-level insights; managed and cleaned field data for statistical analysis, prepared the final report, and successfully defended the B.S. thesis.</p>
+              <div class="exp-tags">
+                <span class="badge badge-outline">Field Research</span>
+                <span class="badge badge-outline">Ecology</span>
+                <span class="badge badge-outline">Invasion Biology</span>
+                <span class="badge badge-outline">Data Analysis</span>
+                <span class="badge badge-outline">GIS</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== RESEARCH ===== -->
+    <section id="research">
+      <div class="container">
+        <div class="section-heading">
+          <div class="section-eyebrow">04 — Research</div>
+          <h2 class="section-title">Research &amp; Publications</h2>
+          <p class="section-desc">My published work centres on whole-genome sequencing of fish-pathogenic bacteria isolated from Bangladeshi aquaculture — making genomic resources available to the broader microbiology community through ASM's Microbiology Resource Announcements.</p>
+        </div>
+        <div class="tabs" id="researchTabs">
+          <button class="tab active" data-tab="publications"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg> Publications <span class="tab-count">4</span></button>
+          <button class="tab" data-tab="ongoing"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg> Ongoing <span class="tab-count">2</span></button>
+          <button class="tab" data-tab="conferences"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11l18-5v12L3 14v-3z"/><path d="M11.6 16.8a3 3 0 1 1-5.8-1.6"/></svg> Conferences <span class="tab-count">4</span></button>
+          <button class="tab" data-tab="certifications"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/></svg> Certifications <span class="tab-count">5</span></button>
+        </div>
+
+        <!-- Publications -->
+        <div class="tab-panel active" id="publications">
+          <div class="pub-item">
+            <div class="pub-head">
+              <span class="pub-year">2026</span>
+              <div style="flex:1">
+                <div class="pub-title">Whole-genome sequence of <em>Streptococcus agalactiae</em> strain GIFTS31 isolated from streptococcosis-infected Nile tilapia in Bangladesh</div>
+                <div class="pub-venue">Microbiology Resource Announcement, ASM</div>
+                <div class="pub-authors">Biswas S, Babu MR, Yeasmin F, Saha P, Guha A, Hossain MA, Rahman MM, Islam T, Rahman MM</div>
+              </div>
+              <a href="https://doi.org/10.1128/mra.00441-26" target="_blank" rel="noopener" class="pub-link" aria-label="Open publication"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></a>
+            </div>
+          </div>
+          <div class="pub-item">
+            <div class="pub-head">
+              <span class="pub-year">2026</span>
+              <div style="flex:1">
+                <div class="pub-title">Draft genome sequence of fish-pathogenic <em>Enterococcus faecalis</em> GIFTE22 isolated from diseased Nile tilapia (<em>Oreochromis niloticus</em>)</div>
+                <div class="pub-venue">Microbiology Resource Announcement, ASM</div>
+                <div class="pub-authors">Biswas S, Babu MR, Yeasmin F, Saha P, Guha A, Rahman MM, Islam T, Rahman MM</div>
+              </div>
+              <a href="https://doi.org/10.1128/mra.00416-26" target="_blank" rel="noopener" class="pub-link" aria-label="Open publication"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></a>
+            </div>
+          </div>
+          <div class="pub-item">
+            <div class="pub-head">
+              <span class="pub-year">2026</span>
+              <div style="flex:1">
+                <div class="pub-title">Genome sequence of <em>Escherichia coli</em> H1G2: a B1 lineage isolated from the gut of Hilsa shad (<em>Tenualosa ilisha</em>) of Bangladesh</div>
+                <div class="pub-venue">Microbiology Resource Announcement, ASM</div>
+                <div class="pub-authors">Galib FA, Kafi AA, Biswas S, Hasnat S, Gupta DR, Hoque MN, Rahman MM, Rahman MM, Islam T</div>
+              </div>
+              <a href="https://doi.org/10.1128/mra.00138-26" target="_blank" rel="noopener" class="pub-link" aria-label="Open publication"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></a>
+            </div>
+          </div>
+          <div class="pub-item">
+            <div class="pub-head">
+              <span class="pub-year">2026</span>
+              <div style="flex:1">
+                <div class="pub-title">Draft genome sequence of <em>Bacillus cereus</em> HS120, a probiotic candidate isolated from the gut of hilsa (<em>Tenualosa ilisha</em>)</div>
+                <div class="pub-venue">Microbiology Resource Announcement, ASM</div>
+                <div class="pub-authors">Yeasmin F, Babu MR, Saha P, Biswas S, Guha A, Islam T, Gupta DR, Rahman MM</div>
+              </div>
+              <a href="https://doi.org/10.1128/mra.00151-26" target="_blank" rel="noopener" class="pub-link" aria-label="Open publication"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Ongoing -->
+        <div class="tab-panel" id="ongoing">
+          <div class="ongoing-grid">
+            <div class="ongoing-card">
+              <div class="ongoing-head"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg> In progress · 2024 – Present</div>
+              <div class="ongoing-title">Genomic Characterization, Point-of-Care Detection, and In Silico Drug Target Analysis of <em>Streptococcus agalactiae</em> Causing Streptococcosis in Tilapia</div>
+              <div class="ongoing-role">M.S. Thesis Project</div>
+              <p class="ongoing-desc">An integrated pipeline combining whole-genome sequencing, species-specific PCR primer design for point-of-care detection, and in silico drug target identification against <em>S. agalactiae</em> isolates from Bangladeshi tilapia farms.</p>
+            </div>
+            <div class="ongoing-card">
+              <div class="ongoing-head"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg> In progress · 2025 – Present</div>
+              <div class="ongoing-title">AI-Assisted Genomic Insights into Host Adaptation and Virulence of Fish-Pathogenic <em>Streptococcus agalactiae</em> in Aquaculture in Bangladesh</div>
+              <div class="ongoing-role">Conference Study</div>
+              <p class="ongoing-desc">Applying machine-learning-assisted comparative genomics to investigate host adaptation signatures and virulence gene repertoires across <em>S. agalactiae</em> isolates from farmed Nile tilapia.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Conferences -->
+        <div class="tab-panel" id="conferences">
+          <div class="conf-item">
+            <div class="conf-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11l18-5v12L3 14v-3z"/><path d="M11.6 16.8a3 3 0 1 1-5.8-1.6"/></svg></div>
+            <div style="flex:1">
+              <div class="conf-title">AI-Assisted Genomic Insights into Host Adaptation and Virulence of Fish-Pathogenic <em>Streptococcus agalactiae</em> in Aquaculture in Bangladesh</div>
+              <div class="conf-venue">6th Young Scientist Congress (YSC 2026), Bangladesh Academy of Sciences (BAS), Dhaka</div>
+            </div>
+            <span class="conf-note"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg> Oral Presentation</span>
+            <span class="conf-year">2026</span>
+          </div>
+          <div class="conf-item">
+            <div class="conf-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11l18-5v12L3 14v-3z"/><path d="M11.6 16.8a3 3 0 1 1-5.8-1.6"/></svg></div>
+            <div style="flex:1">
+              <div class="conf-title">Identification of <em>Streptococcus agalactiae</em> from Streptococcosis in Nile tilapia and Biocontrol Agents Against Streptococcosis</div>
+              <div class="conf-venue">6th International Conference of Biotechnology on Health and Agriculture (ICBHA-2025), GNOBB</div>
+            </div>
+            <span class="conf-note"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg> Oral Presentation</span>
+            <span class="conf-year">2025</span>
+          </div>
+          <div class="conf-item">
+            <div class="conf-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11l18-5v12L3 14v-3z"/><path d="M11.6 16.8a3 3 0 1 1-5.8-1.6"/></svg></div>
+            <div style="flex:1">
+              <div class="conf-title">Exploring Native Probiotic Strains for the Sustainable Cultivation of Tiger Shrimp (<em>Penaeus monodon</em>)</div>
+              <div class="conf-venue">International Biotechnology Conference (IBC-2025), BRAC University, Dhaka</div>
+            </div>
+            <span class="conf-note"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/></svg> Best Poster</span>
+            <span class="conf-year">2025</span>
+          </div>
+          <div class="conf-item">
+            <div class="conf-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11l18-5v12L3 14v-3z"/><path d="M11.6 16.8a3 3 0 1 1-5.8-1.6"/></svg></div>
+            <div style="flex:1">
+              <div class="conf-title">Distribution and Potential Ecological Risk of Suckermouth Catfish Invasion in Bangladesh</div>
+              <div class="conf-venue">10th Biennial Fisheries Conference and Research Fair 2025, Next Generation Fisheries &amp; Aquaculture</div>
+            </div>
+            <span class="conf-note"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/></svg> Best Poster</span>
+            <span class="conf-year">2025</span>
+          </div>
+        </div>
+
+        <!-- Certifications -->
+        <div class="tab-panel" id="certifications">
+          <div class="cert-grid">
+            <div class="cert-card">
+              <div class="cert-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/></svg></div>
+              <div class="cert-title">Tools and Techniques of Bioinformatics (80 hrs)</div>
+              <div class="cert-issuer">Dept. of CSIT, GAU — EDGE Project, Bangladesh Computer Council, ICT Division</div>
+              <div class="cert-year">2024</div>
+            </div>
+            <div class="cert-card">
+              <div class="cert-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/></svg></div>
+              <div class="cert-title">Introduction to Programming with Python (60 hrs)</div>
+              <div class="cert-issuer">Dept. of CSE, GSTU — EDGE Project, Bangladesh Computer Council, ICT Division</div>
+              <div class="cert-year">2023</div>
+            </div>
+            <div class="cert-card">
+              <div class="cert-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/></svg></div>
+              <div class="cert-title">R Programming &amp; Data Science (4 days)</div>
+              <div class="cert-issuer">Iskulghar — Research Aid Bangladesh</div>
+              <div class="cert-year">2024</div>
+            </div>
+            <div class="cert-card">
+              <div class="cert-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/></svg></div>
+              <div class="cert-title">Computer-Aided Drug Design A to Z (4 days)</div>
+              <div class="cert-issuer">Dawn of Bioinformatics Limited Bangladesh</div>
+              <div class="cert-year">2024</div>
+            </div>
+            <div class="cert-card">
+              <div class="cert-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/></svg></div>
+              <div class="cert-title">Whole-Genome Sequencing of Bacterial Genomes: Tools and Applications</div>
+              <div class="cert-issuer">Technical University of Denmark (DTU), via Coursera</div>
+              <div class="cert-year">2024</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== ACTIVITIES ===== -->
+    <section id="services" class="section-alt">
+      <div class="container">
+        <div class="section-heading">
+          <div class="section-eyebrow">05 — Outreach &amp; Activities</div>
+          <h2 class="section-title">Outreach &amp; Activities</h2>
+          <p class="section-desc">Beyond research: peer review, bioinformatics outreach, ASM membership, leadership roles, and volunteer work that keep me connected to the wider scientific community.</p>
+        </div>
+
+        <!-- Services -->
+        <div class="services-grid">
+          <div class="service-card">
+            <div class="service-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg></div>
+            <div class="service-title">Bioinformatics Outreach</div>
+            <p class="service-desc">Serve as Bioinformatics Campus Coordinator for Dawn of Bioinformatics, organising workshops and training sessions that make genomics and computational biology accessible to undergraduate students across the GAU campus.</p>
+          </div>
+          <div class="service-card">
+            <div class="service-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg></div>
+            <div class="service-title">ASM Global Outreach</div>
+            <p class="service-desc">Contributing member of the American Society for Microbiology's Global Outreach network, helping connect Bangladeshi early-career microbiologists with international research, mentoring, and capacity-building opportunities.</p>
+          </div>
+          <div class="service-card">
+            <div class="service-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></div>
+            <div class="service-title">Peer Review &amp; Manuscripts</div>
+            <p class="service-desc">Contributing author on multiple genome-announcement manuscripts submitted to ASM's Microbiology Resource Announcements, with experience in collaborative scientific writing, data sharing, and reviewer responsiveness.</p>
+          </div>
+          <div class="service-card">
+            <div class="service-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg></div>
+            <div class="service-title">Mentoring &amp; Science Communication</div>
+            <p class="service-desc">Mentor junior lab members in molecular workflows (PCR, DNA extraction, biosafety) and contribute to accessible scientific communication through conference posters, oral presentations, and BioRender illustrations.</p>
+          </div>
+        </div>
+
+        <!-- Awards -->
+        <div class="sub-label">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/></svg>
+          Grants &amp; Awards
+        </div>
+        <div class="award-grid">
+          <div class="award-card">
+            <div class="award-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/></svg></div>
+            <div style="flex:1">
+              <div class="award-title">National Science and Technology Fellowship 2024–2025</div>
+              <div class="award-org">Ministry of Science and Technology, Government of the People's Republic of Bangladesh</div>
+              <p class="award-desc">Awarded in recognition of academic and research merit in the M.S. program.</p>
+            </div>
+            <span class="award-period">2024–2025</span>
+          </div>
+          <div class="award-card">
+            <div class="award-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/></svg></div>
+            <div style="flex:1">
+              <div class="award-title">Best Poster Presenter</div>
+              <div class="award-org">IBC-2025 — Harnessing Sustainable Environment, Agriculture, and Health, BRAC University</div>
+              <p class="award-desc">Awarded for the poster on native probiotic strains for sustainable tiger shrimp cultivation.</p>
+            </div>
+            <span class="award-period">Jun 2025</span>
+          </div>
+          <div class="award-card">
+            <div class="award-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/></svg></div>
+            <div style="flex:1">
+              <div class="award-title">Best Poster Presenter</div>
+              <div class="award-org">10th Biennial Fisheries Conference and Research Fair 2025</div>
+              <p class="award-desc">Awarded for the poster on the ecological risk of suckermouth catfish invasion in Bangladesh.</p>
+            </div>
+            <span class="award-period">Dec 2025</span>
+          </div>
+          <div class="award-card">
+            <div class="award-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/></svg></div>
+            <div style="flex:1">
+              <div class="award-title">Merit Scholarship (Academic Excellence)</div>
+              <div class="award-org">Gazipur Agricultural University</div>
+              <p class="award-desc">Awarded for outstanding performance in the 5th term of the M.S. program.</p>
+            </div>
+            <span class="award-period">2024</span>
+          </div>
+        </div>
+
+        <!-- Leadership + Volunteer -->
+        <div class="activity-grid">
+          <div>
+            <div class="sub-label">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+              Leadership &amp; Affiliations
+            </div>
+            <div class="activity-item">
+              <div class="activity-head">
+                <div><div class="activity-role">Bioinformatics Campus Coordinator</div><div class="activity-org">Dawn of Bioinformatics Ltd. BD</div></div>
+                <span class="award-period">2025 – Present</span>
+              </div>
+              <p class="activity-desc">Coordinate campus-level bioinformatics training, workshops, and student engagement activities.</p>
+            </div>
+            <div class="activity-item">
+              <div class="activity-head">
+                <div><div class="activity-role">Global Outreach — Contributing Member</div><div class="activity-org">American Society for Microbiology (ASM)</div></div>
+                <span class="award-period">2025 – Present</span>
+              </div>
+              <p class="activity-desc">Contribute to ASM's global outreach initiatives connecting microbiologists across borders.</p>
+            </div>
+            <div class="activity-item">
+              <div class="activity-head">
+                <div><div class="activity-role">Former General Secretary</div><div class="activity-org">Basundhara Shuvashangha, GSTU-8105</div></div>
+                <span class="award-period">2024 – 2025</span>
+              </div>
+              <p class="activity-desc">Led cultural and community engagement programmes for the student body.</p>
+            </div>
+            <div class="activity-item">
+              <div class="activity-head">
+                <div><div class="activity-role">Former Executive Member</div><div class="activity-org">Gopalganj Science and Technology Higher Society, GSTU-8105</div></div>
+                <span class="award-period">2022 – 2023</span>
+              </div>
+              <p class="activity-desc">Organised science outreach and academic events for undergraduate peers.</p>
+            </div>
+          </div>
+          <div>
+            <div class="sub-label">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+              Volunteer Experience
+            </div>
+            <div class="activity-item">
+              <div class="activity-head">
+                <div><div class="activity-role">Former Sub-coordinator (Logistics)</div><div class="activity-org">BD Clean, Gopalganj</div></div>
+                <span class="award-period">2020 – 2024</span>
+              </div>
+              <p class="activity-desc">Volunteered in community clean-up and environmental awareness drives across Gopalganj district, coordinating logistics for volunteer teams.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== CONTACT ===== -->
+    <section id="contact">
+      <div class="container">
+        <div class="section-heading">
+          <div class="section-eyebrow">06 — Contact</div>
+          <h2 class="section-title">Get in Touch</h2>
+          <p class="section-desc">Open to research collaborations, peer review requests, conference invitations, and conversations about M.S. and Ph.D. opportunities in molecular microbiology and bacterial genomics. The fastest way to reach me is email — I usually reply within 48 hours.</p>
+        </div>
+        <div class="contact-grid">
+          <div class="contact-cta">
+            <div class="contact-eyebrow">Let's build something</div>
+            <h3 class="contact-h3">Reach out for collaborations, peer reviews, or speaking invitations.</h3>
+            <p class="contact-p">Whether you are organizing a conference, planning a research partnership, or simply curious about my work, I would love to hear from you. Email is usually the fastest path.</p>
+            <div class="contact-btns">
+              <a href="mailto:santub035@gmail.com" class="btn btn-primary btn-lg">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                Email me
+              </a>
+              <a href="santu-biswas-cv.pdf" target="_blank" class="btn btn-outline btn-lg">Download CV</a>
+            </div>
+            <div class="contact-info">
+              <div class="contact-info-item">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                <a href="mailto:santub035@gmail.com">santub035@gmail.com</a>
+              </div>
+              <div class="contact-info-item">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                <a href="tel:+8801XXXXXXXXX">+880 1XXX-XXXXXX</a>
+              </div>
+              <div class="contact-info-item contact-info-full">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-top: 2px;"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                <span>Institute of Biotechnology and Genetic Engineering, Gazipur Agricultural University, Gazipur-1706, Bangladesh</span>
+              </div>
+            </div>
+          </div>
+          <div>
+            <div class="contact-socials-label">Find me online</div>
+            <div class="contact-socials-list">
+              <a href="https://www.linkedin.com/in/santu-biswas" target="_blank" rel="noopener" class="contact-social-link">
+                <div class="contact-social-left">
+                  <div class="contact-social-icon"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 0h-14c-2.76 0-5 2.24-5 5v14c0 2.76 2.24 5 5 5h14c2.76 0 5-2.24 5-5v-14c0-2.76-2.24-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.25c-.97 0-1.75-.78-1.75-1.75s.78-1.75 1.75-1.75 1.75.78 1.75 1.75-.78 1.75-1.75 1.75zm13.5 12.25h-3v-5.5c0-1.5-.5-2.5-1.5-2.5s-1.5 1-1.5 2.5v5.5h-3v-11h3v1.5c.5-.75 1.5-1.5 3-1.5 2 0 3.5 1.5 3.5 4.5v6.5z"/></svg></div>
+                  <div><div class="contact-social-name">LinkedIn</div><div class="contact-social-host">linkedin.com</div></div>
+                </div>
+                <svg class="contact-social-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
+              </a>
+              <a href="https://scholar.google.com/" target="_blank" rel="noopener" class="contact-social-link">
+                <div class="contact-social-left">
+                  <div class="contact-social-icon"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M5.242 13.769L0 9.5 12 0l12 9.5-5.242 4.269C17.548 11.249 14.978 9.5 12 9.5c-2.977 0-5.548 1.749-6.758 4.269zM12 10a7 7 0 1 0 0 14 7 7 0 0 0 0-14z"/></svg></div>
+                  <div><div class="contact-social-name">Google Scholar</div><div class="contact-social-host">scholar.google.com</div></div>
+                </div>
+                <svg class="contact-social-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
+              </a>
+              <a href="https://orcid.org/" target="_blank" rel="noopener" class="contact-social-link">
+                <div class="contact-social-left">
+                  <div class="contact-social-icon"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12s5.37 12 12 12 12-5.37 12-12S18.63 0 12 0zM7.264 5.27c.46 0 .832.372.832.833s-.372.833-.832.833a.833.833 0 1 1 0-1.666zm-.222 2.916h1.667v9.723H7.042V8.186zm4.182 0h3.334c3.18 0 5.139 2.36 5.139 4.86s-1.959 4.86-5.139 4.86h-3.334V8.186zm1.667 1.5v7.36h1.667c2.667 0 3.778-1.875 3.778-3.68s-1.111-3.68-3.778-3.68h-1.667z"/></svg></div>
+                  <div><div class="contact-social-name">ORCID</div><div class="contact-social-host">orcid.org</div></div>
+                </div>
+                <svg class="contact-social-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
+              </a>
+              <a href="https://www.researchgate.net/" target="_blank" rel="noopener" class="contact-social-link">
+                <div class="contact-social-left">
+                  <div class="contact-social-icon"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M19.586 17.05c-.258-.128-.486-.257-.715-.386-.36-.18-.66-.36-.96-.51-.93-.49-1.93-1.04-2.83-1.79.27-.41.5-.83.69-1.25.4-.97.62-2.04.62-3.16 0-1.31-.27-2.5-.78-3.55-.49-1.01-1.2-1.88-2.12-2.55-.92-.67-2.01-1.16-3.21-1.42-.55-.12-1.13-.18-1.71-.18-1.34 0-2.59.27-3.69.79-1.1.52-2.04 1.27-2.78 2.2-.74.93-1.28 2.04-1.59 3.28-.16.62-.24 1.26-.24 1.9 0 1.18.22 2.28.65 3.26.43.98 1.04 1.83 1.82 2.51.77.68 1.69 1.21 2.73 1.56 1.04.35 2.18.51 3.37.48.69-.02 1.36-.12 2-.3.27.27.56.51.86.74-.49.16-.99.27-1.5.34-1.16.15-2.34.05-3.46-.3-1.12-.35-2.13-.92-3-1.69-.87-.77-1.55-1.71-2.04-2.78-.49-1.07-.74-2.26-.74-3.53 0-1.21.22-2.34.65-3.37.43-1.03 1.04-1.93 1.82-2.69.78-.76 1.69-1.35 2.73-1.78 1.04-.43 2.16-.65 3.37-.65 1.04 0 2.04.17 2.98.51.94.34 1.78.82 2.51 1.44.73.62 1.31 1.36 1.73 2.22.42.86.64 1.81.64 2.83 0 .93-.16 1.81-.48 2.62-.32.81-.78 1.54-1.37 2.18-.59.64-1.28 1.16-2.08 1.56.18.12.37.23.55.34 1.13.69 2.32 1.18 3.55 1.49.62.16 1.26.26 1.9.32.34.03.69.04 1.04.04.16 0 .32 0 .48-.01z"/></svg></div>
+                  <div><div class="contact-social-name">ResearchGate</div><div class="contact-social-host">researchgate.net</div></div>
+                </div>
+                <svg class="contact-social-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-inner">
+        <div class="footer-brand">
+          <span class="footer-badge">SB</span>
+          <span class="footer-name">Santu Biswas</span>
+        </div>
+        <p class="footer-copy">© <span id="year"></span> Santu Biswas. Built with HTML &amp; CSS.</p>
+        <div class="footer-socials">
+          <a href="https://www.linkedin.com/in/santu-biswas" target="_blank" rel="noopener" aria-label="LinkedIn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 0h-14c-2.76 0-5 2.24-5 5v14c0 2.76 2.24 5 5 5h14c2.76 0 5-2.24 5-5v-14c0-2.76-2.24-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.25c-.97 0-1.75-.78-1.75-1.75s.78-1.75 1.75-1.75 1.75.78 1.75 1.75-.78 1.75-1.75 1.75zm13.5 12.25h-3v-5.5c0-1.5-.5-2.5-1.5-2.5s-1.5 1-1.5 2.5v5.5h-3v-11h3v1.5c.5-.75 1.5-1.5 3-1.5 2 0 3.5 1.5 3.5 4.5v6.5z"/></svg></a>
+          <a href="https://scholar.google.com/" target="_blank" rel="noopener" aria-label="Google Scholar"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M5.242 13.769L0 9.5 12 0l12 9.5-5.242 4.269C17.548 11.249 14.978 9.5 12 9.5c-2.977 0-5.548 1.749-6.758 4.269zM12 10a7 7 0 1 0 0 14 7 7 0 0 0 0-14z"/></svg></a>
+          <a href="https://orcid.org/" target="_blank" rel="noopener" aria-label="ORCID"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12s5.37 12 12 12 12-5.37 12-12S18.63 0 12 0zM7.264 5.27c.46 0 .832.372.832.833s-.372.833-.832.833a.833.833 0 1 1 0-1.666zm-.222 2.916h1.667v9.723H7.042V8.186zm4.182 0h3.334c3.18 0 5.139 2.36 5.139 4.86s-1.959 4.86-5.139 4.86h-3.334V8.186zm1.667 1.5v7.36h1.667c2.667 0 3.778-1.875 3.778-3.68s-1.111-3.68-3.778-3.68h-1.667z"/></svg></a>
+          <a href="https://www.researchgate.net/" target="_blank" rel="noopener" aria-label="ResearchGate"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M19.586 17.05c-.258-.128-.486-.257-.715-.386-.36-.18-.66-.36-.96-.51-.93-.49-1.93-1.04-2.83-1.79.27-.41.5-.83.69-1.25.4-.97.62-2.04.62-3.16 0-1.31-.27-2.5-.78-3.55-.49-1.01-1.2-1.88-2.12-2.55-.92-.67-2.01-1.16-3.21-1.42-.55-.12-1.13-.18-1.71-.18-1.34 0-2.59.27-3.69.79-1.1.52-2.04 1.27-2.78 2.2-.74.93-1.28 2.04-1.59 3.28-.16.62-.24 1.26-.24 1.9 0 1.18.22 2.28.65 3.26.43.98 1.04 1.83 1.82 2.51.77.68 1.69 1.21 2.73 1.56 1.04.35 2.18.51 3.37.48.69-.02 1.36-.12 2-.3.27.27.56.51.86.74-.49.16-.99.27-1.5.34-1.16.15-2.34.05-3.46-.3-1.12-.35-2.13-.92-3-1.69-.87-.77-1.55-1.71-2.04-2.78-.49-1.07-.74-2.26-.74-3.53 0-1.21.22-2.34.65-3.37.43-1.03 1.04-1.93 1.82-2.69.78-.76 1.69-1.35 2.73-1.78 1.04-.43 2.16-.65 3.37-.65 1.04 0 2.04.17 2.98.51.94.34 1.78.82 2.51 1.44.73.62 1.31 1.36 1.73 2.22.42.86.64 1.81.64 2.83 0 .93-.16 1.81-.48 2.62-.32.81-.78 1.54-1.37 2.18-.59.64-1.28 1.16-2.08 1.56.18.12.37.23.55.34 1.13.69 2.32 1.18 3.55 1.49.62.16 1.26.26 1.9.32.34.03.69.04 1.04.04.16 0 .32 0 .48-.01z"/></svg></a>
+          <button class="icon-btn" id="backToTop" aria-label="Back to top">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ===== SCRIPTS ===== -->
+  <script>
+    // === Year ===
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // === Navbar scroll effect ===
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+      navbar.classList.toggle('scrolled', window.scrollY > 24);
+    });
+
+    // === Mobile menu ===
+    const mobileToggle = document.getElementById('mobileToggle');
+    const mobileMenu = document.getElementById('mobileMenu');
+    mobileToggle.addEventListener('click', () => {
+      mobileMenu.classList.toggle('open');
+    });
+
+    // === Smooth scroll for all nav links ===
+    document.querySelectorAll('[data-nav], .nav-links a, .scroll-hint').forEach(el => {
+      el.addEventListener('click', (e) => {
+        const href = el.getAttribute('data-nav') || el.getAttribute('href');
+        if (href && href.startsWith('#')) {
+          e.preventDefault();
+          const target = document.querySelector(href);
+          if (target) {
+            const top = target.offsetTop - 80;
+            window.scrollTo({ top, behavior: 'smooth' });
+          }
+          mobileMenu.classList.remove('open');
+        }
+      });
+    });
+
+    // === Active section tracking ===
+    const sections = document.querySelectorAll('section[id]');
+    const navLinks = document.querySelectorAll('.nav-links a');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const id = '#' + entry.target.id;
+          navLinks.forEach(link => {
+            link.classList.toggle('active', link.getAttribute('href') === id);
+          });
+        }
+      });
+    }, { rootMargin: '-40% 0px -55% 0px' });
+    sections.forEach(s => observer.observe(s));
+
+    // === Theme toggle ===
+    const themeToggle = document.getElementById('themeToggle');
+    const themeIcon = document.getElementById('themeIcon');
+    const sunIcon = '<path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/><circle cx="12" cy="12" r="5"/>';
+    const moonIcon = '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>';
+    const savedTheme = localStorage.getItem('theme') || 'light';
+    if (savedTheme === 'dark') {
+      document.documentElement.classList.add('dark');
+      themeIcon.innerHTML = sunIcon;
+    }
+    themeToggle.addEventListener('click', () => {
+      const isDark = document.documentElement.classList.toggle('dark');
+      themeIcon.innerHTML = isDark ? sunIcon : moonIcon;
+      localStorage.setItem('theme', isDark ? 'dark' : 'light');
+    });
+
+    // === Share dropdown ===
+    const shareBtn = document.getElementById('shareBtn');
+    const shareMenu = document.getElementById('shareMenu');
+    shareBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const isOpen = shareMenu.classList.toggle('open');
+      shareBtn.setAttribute('aria-expanded', isOpen);
+    });
+    document.addEventListener('click', () => {
+      shareMenu.classList.remove('open');
+      shareBtn.setAttribute('aria-expanded', 'false');
+    });
+    shareMenu.addEventListener('click', (e) => e.stopPropagation());
+
+    // === Share actions ===
+    const shareUrl = window.location.href;
+    const shareText = "Check out Santu Biswas's portfolio — Molecular Microbiologist & Bioinformatician";
+    document.querySelectorAll('.share-menu-item').forEach(item => {
+      item.addEventListener('click', () => {
+        const action = item.dataset.action;
+        if (action === 'copy') {
+          navigator.clipboard.writeText(shareUrl).then(() => alert('Link copied to clipboard!')).catch(() => alert('Copy this manually: ' + shareUrl));
+        } else if (action === 'linkedin') {
+          window.open('https://www.linkedin.com/sharing/share-offsite/?url=' + encodeURIComponent(shareUrl), '_blank', 'noopener,width=600,height=600');
+        } else if (action === 'twitter') {
+          window.open('https://twitter.com/intent/tweet?url=' + encodeURIComponent(shareUrl) + '&text=' + encodeURIComponent(shareText), '_blank', 'noopener,width=600,height=600');
+        } else if (action === 'whatsapp') {
+          window.open('https://wa.me/?text=' + encodeURIComponent(shareText + ' ' + shareUrl), '_blank', 'noopener,width=600,height=600');
+        } else if (action === 'qr') {
+          const a = document.createElement('a');
+          a.href = 'portfolio-qr-code.png';
+          a.download = 'santu-biswas-portfolio-qr.png';
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+        }
+        shareMenu.classList.remove('open');
+      });
+    });
+
+    // === Research tabs ===
+    document.querySelectorAll('#researchTabs .tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        const target = tab.dataset.tab;
+        document.querySelectorAll('#researchTabs .tab').forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+        tab.classList.add('active');
+        document.getElementById(target).classList.add('active');
+      });
+    });
+
+    // === Back to top ===
+    document.getElementById('backToTop').addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  </script>
+</body>
+</html>

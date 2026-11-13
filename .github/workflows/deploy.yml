@@ -1,0 +1,76 @@
+# Auto-deploys the Next.js static export to GitHub Pages on every push to main.
+#
+# Setup (one-time, takes ~2 minutes):
+#   1. Push your code to a GitHub repo (any name works for a user site —
+#      the URL will be https://<your-username>.github.io/<repo-name>/).
+#      For a top-level user site (https://<your-username>.github.io/),
+#      name the repo exactly "<your-username>.github.io".
+#   2. In your repo → Settings → Pages → "Build and deployment" → Source:
+#      select "GitHub Actions" (NOT "Deploy from a branch").
+#   3. Push to main — this workflow runs automatically.
+#
+# After ~2 minutes your site is live at the URL GitHub shows under
+# Settings → Pages.
+
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main, master]
+  workflow_dispatch: # lets you trigger a deploy manually from the Actions tab
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Allow only one concurrent deployment
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: Build static site
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+
+      - name: Build static site
+        run: bun run build
+        env:
+          # NextAuth env vars aren't needed for static export, but provide
+          # placeholder values so any code that reads them doesn't crash.
+          NEXTAUTH_SECRET: static-export-placeholder
+          NEXTAUTH_URL: https://${{ github.repository_owner }}.github.io
+          ADMIN_USERNAME: santu
+          ADMIN_PASSWORD: portfolio2026
+
+      - name: Add .nojekyll (prevent GitHub Pages Jekyll processing)
+        run: touch ./out/.nojekyll
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./out
+
+  deploy:
+    name: Deploy to GitHub Pages
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
